@@ -1,0 +1,7 @@
+{
+    "require": {
+        "slim/slim": "^2.6",
+        "phpunit/phpunit": "^4.8",
+        "braintree/braintree_php": "^3.7"
+    }
+}
