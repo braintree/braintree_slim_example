@@ -14,8 +14,8 @@ $app->config([
     'templates.path' => 'templates',
 ]);
 
-$app->get('/', function () {
-    echo "Hello World!";
+$app->get('/', function () use ($app) {
+    $app->redirect('/checkouts');
 });
 
 $app->get('/checkouts', function () use ($app) {
