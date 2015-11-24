@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+require_once("braintree_init.php");
 
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
@@ -21,6 +22,12 @@ $app->get('/', function () use ($app) {
 $app->get('/checkouts', function () use ($app) {
     $app->render('checkouts/new.php', [
         'client_token' => Braintree\ClientToken::generate(),
+    ]);
+});
+
+$app->get('/checkouts/:transaction_id', function ($transaction_id) use ($app) {
+    $app->render('checkouts/show.php', [
+        'transaction' => Braintree\Transaction::find($transaction_id),
     ]);
 });
 
