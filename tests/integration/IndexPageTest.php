@@ -73,4 +73,48 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         $this->assertContains($transaction->creditCardDetails->expirationDate, $output);
         $this->assertContains($transaction->creditCardDetails->customerLocation, $output);
     }
+
+    function test_createsCheckoutsRedirectsToTransactionPage()
+    {
+        $non_duplicate_amount = rand(1,10000);
+        $fields = array(
+            'amount' => $non_duplicate_amount,
+            'payment_method_nonce' => "fake-valid-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($curl);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $redirectUrl = curl_getinfo($curl, CURLINFO_REDIRECT_URL);
+        curl_close($curl);
+        $this->assertEquals($httpStatus, 302);
+        $this->assertRegExp('/\/checkouts\/[a-z0-9]+/', $redirectUrl);
+    }
+
+    function test_checkoutsErrorRedirectsToCheckoutCreatePage()
+    {
+        $non_duplicate_amount = rand(1,10000);
+        $fields = array(
+            'amount' => $non_duplicate_amount,
+            'payment_method_nonce' => "fake-consumed-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($curl);
+        $redirectUrl = curl_getinfo($curl, CURLINFO_REDIRECT_URL);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        $this->assertEquals($httpStatus, 302);
+        $this->assertRegExp('/\/checkouts/', $redirectUrl);
+    }
 }

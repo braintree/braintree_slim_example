@@ -25,6 +25,19 @@ $app->get('/checkouts', function () use ($app) {
     ]);
 });
 
+$app->post('/checkouts', function () use ($app) {
+    $result = Braintree\Transaction::sale([
+        "amount" => $app->request->post('amount'),
+        "paymentMethodNonce" => $app->request->post('payment_method_nonce'),
+    ]);
+
+    if($result->success) {
+        $app->redirect('/checkouts/' . $result->transaction->id);
+    } else {
+        $app->redirect('/checkouts');
+    }
+});
+
 $app->get('/checkouts/:transaction_id', function ($transaction_id) use ($app) {
     $app->render('checkouts/show.php', [
         'transaction' => Braintree\Transaction::find($transaction_id),

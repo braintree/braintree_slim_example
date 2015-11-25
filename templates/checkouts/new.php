@@ -4,7 +4,7 @@
 </head>
 <body>
     <h1>Checkout</h1>
-    <form method="post" id="checkout" action="/checkout.php">
+    <form method="post" id="checkout" action="/checkouts">
         <label for="amount">Amount</label>
         <input type="text" name="amount" id="amount" value="10.00">
         <div id="payment-form"></div>
