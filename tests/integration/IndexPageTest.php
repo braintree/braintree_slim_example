@@ -117,4 +117,24 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($httpStatus, 302);
         $this->assertRegExp('/\/checkouts/', $redirectUrl);
     }
+
+    function test_transactionErrorDisplaysFlashMessage()
+    {
+        $fields = array(
+            'amount' => 10,
+            'payment_method_nonce' => "fake-consumed-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_COOKIEFILE, "");
+        $output = curl_exec($curl);
+        curl_close($curl);
+        $this->assertRegExp('/Cannot use a paymentMethodNonce more than once./', $output);
+    }
 }

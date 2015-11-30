@@ -3,6 +3,13 @@
     <title>BraintreeSlimExample</title>
 </head>
 <body>
+    <?php
+        if(isset($flash['errors'])) {
+            foreach($flash['errors'] AS $error) {
+                echo("<div>" . $error . "</div>\n");
+            }
+        }
+    ?>
     <h1>Checkout</h1>
     <form method="post" id="checkout" action="/checkouts">
         <label for="amount">Amount</label>
