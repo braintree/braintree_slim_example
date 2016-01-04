@@ -2,9 +2,6 @@
 require 'vendor/autoload.php';
 require_once("braintree_init.php");
 
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
-
 $app = new \Slim\Slim();
 $app->add(new \Slim\Middleware\SessionCookie(array(
     'expires' => '20 minutes',
