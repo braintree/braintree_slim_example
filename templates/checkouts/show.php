@@ -4,6 +4,12 @@
     <title>BraintreeSlimExample</title>
 </head>
 <body>
+    <?php
+        if(isset($_SESSION["errors"])) {
+            echo($_SESSION["errors"]);
+            unset($_SESSION["errors"]);
+        }
+    ?>
     <h1>Transaction <?php echo($transaction->id)?></h1>
     <h2>Details</h2>
     <p>

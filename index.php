@@ -26,6 +26,11 @@ $app->post('/checkouts', function () use ($app) {
 
     if($result->success) {
         $app->redirect('/checkouts/' . $result->transaction->id);
+    } elseif($result->transaction) {
+        $error = "Transaction status - " . $result->transaction->status;
+
+        $_SESSION["errors"] = $error;
+        $app->redirect('/checkouts/' . $result->transaction->id);
     } else {
         $errorString = "";
 

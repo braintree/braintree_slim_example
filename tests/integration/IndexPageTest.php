@@ -137,4 +137,45 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         curl_close($curl);
         $this->assertRegExp('/Cannot use a paymentMethodNonce more than once./', $output);
     }
+
+    function test_transactionProcessorErrorRedirectsToCheckoutShowPage()
+    {
+        $fields = array(
+            'amount' => 2000,
+            'payment_method_nonce' => "fake-valid-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($curl);
+        $redirectUrl = curl_getinfo($curl, CURLINFO_REDIRECT_URL);
+        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        $this->assertEquals($httpStatus, 302);
+        $this->assertRegExp('/\/checkouts\/[a-z0-9]+/', $redirectUrl);
+    }
+
+    function test_transactionProcessorErrorDisplaysFlashMessage()
+    {
+        $fields = array(
+            'amount' => 2000,
+            'payment_method_nonce' => "fake-valid-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_COOKIEFILE, "");
+        $output = curl_exec($curl);
+        curl_close($curl);
+        $this->assertRegExp('/Transaction status - processor_declined/', $output);
+    }
 }
