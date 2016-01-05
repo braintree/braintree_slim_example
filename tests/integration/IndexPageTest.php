@@ -51,8 +51,9 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_checkoutsShowContainsTransactionInformation()
     {
+        $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
         $result = Braintree\Transaction::sale([
-            'amount' => 10,
+            'amount' => $non_duplicate_amount,
             'paymentMethodNonce' => 'fake-valid-nonce'
         ]);
         $transaction = $result->transaction;
@@ -76,7 +77,7 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_createsCheckoutsRedirectsToTransactionPage()
     {
-        $non_duplicate_amount = rand(1,10000);
+        $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
         $fields = array(
             'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-valid-nonce"
@@ -98,7 +99,7 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_checkoutsErrorRedirectsToCheckoutCreatePage()
     {
-        $non_duplicate_amount = rand(1,10000);
+        $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
         $fields = array(
             'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-consumed-nonce"
@@ -120,8 +121,9 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_transactionErrorDisplaysFlashMessage()
     {
+        $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
         $fields = array(
-            'amount' => 10,
+            'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-consumed-nonce"
         );
         $fields_string = "";
