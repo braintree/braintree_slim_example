@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require_once("braintree_init.php");
+require_once("includes/braintree_init.php");
 
 $app = new \Slim\Slim();
 $app->add(new \Slim\Middleware\SessionCookie(array(
