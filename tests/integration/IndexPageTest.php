@@ -1,5 +1,5 @@
 <?php
-require_once("braintree_init.php");
+require_once("includes/braintree_init.php");
 
 class IndexPageTest extends PHPUnit_Framework_TestCase
 {

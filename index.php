@@ -3,17 +3,7 @@ require 'vendor/autoload.php';
 require_once("includes/braintree_init.php");
 
 $app = new \Slim\Slim();
-$app->add(new \Slim\Middleware\SessionCookie(array(
-    'expires' => '20 minutes',
-    'path' => '/',
-    'domain' => null,
-    'secure' => false,
-    'httponly' => false,
-    'name' => 'my_app',
-    'secret' => getenv('APP_SECRET_KEY'),
-    'cipher' => MCRYPT_RIJNDAEL_256,
-    'cipher_mode' => MCRYPT_MODE_CBC
-)));
+
 $app->config([
     'templates.path' => 'templates',
 ]);
@@ -37,13 +27,13 @@ $app->post('/checkouts', function () use ($app) {
     if($result->success) {
         $app->redirect('/checkouts/' . $result->transaction->id);
     } else {
-        $errors = array();
+        $errorString = "";
 
         foreach($result->errors->deepAll() AS $error) {
-            array_push($errors, $error->code . "-" . $error->message);
+            $errorString .= $error->code . "-" . $error->message . "\n";
         }
 
-        $app->flash('errors', $errors);
+        $_SESSION["errors"] = $errorString;
         $app->redirect('/checkouts');
     }
 });

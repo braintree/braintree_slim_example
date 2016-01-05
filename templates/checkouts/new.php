@@ -4,10 +4,9 @@
 </head>
 <body>
     <?php
-        if(isset($flash['errors'])) {
-            foreach($flash['errors'] AS $error) {
-                echo("<div>" . $error . "</div>\n");
-            }
+        if(isset($_SESSION["errors"])) {
+            echo($_SESSION["errors"]);
+            unset($_SESSION["errors"]);
         }
     ?>
     <h1>Checkout</h1>
