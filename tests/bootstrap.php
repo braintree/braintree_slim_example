@@ -5,7 +5,7 @@ $command = sprintf(
     WEB_SERVER_PORT,
     WEB_SERVER_DOCROOT
 );
-$output = array();
+$output = [];
 exec($command, $output);
 $pid = (int) $output[0];
 sleep(2);

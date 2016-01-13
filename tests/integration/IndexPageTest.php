@@ -78,10 +78,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
     function test_createsCheckoutsRedirectsToTransactionPage()
     {
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
-        $fields = array(
+        $fields = [
             'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-valid-nonce"
-        );
+        ];
         $fields_string = "";
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string, '&');
@@ -100,10 +100,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
     function test_checkoutsErrorRedirectsToCheckoutCreatePage()
     {
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
-        $fields = array(
+        $fields = [
             'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-consumed-nonce"
-        );
+        ];
         $fields_string = "";
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string, '&');
@@ -122,10 +122,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
     function test_transactionErrorDisplaysFlashMessage()
     {
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
-        $fields = array(
+        $fields = [
             'amount' => $non_duplicate_amount,
             'payment_method_nonce' => "fake-consumed-nonce"
-        );
+        ];
         $fields_string = "";
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string, '&');
@@ -142,10 +142,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_transactionProcessorErrorRedirectsToCheckoutShowPage()
     {
-        $fields = array(
+        $fields = [
             'amount' => 2000,
             'payment_method_nonce' => "fake-valid-nonce"
-        );
+        ];
         $fields_string = "";
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string, '&');
@@ -163,10 +163,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_transactionProcessorErrorDisplaysFlashMessage()
     {
-        $fields = array(
+        $fields = [
             'amount' => 2000,
             'payment_method_nonce' => "fake-valid-nonce"
-        );
+        ];
         $fields_string = "";
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
         rtrim($fields_string, '&');
