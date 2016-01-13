@@ -1,4 +1,4 @@
-<?php $transaction = $this->data['transaction']; ?>
+<?php $transaction = $this->data["transaction"]; ?>
 <html>
 <head>
     <title>BraintreeSlimExample</title>
@@ -36,11 +36,11 @@
         </tr>
         <tr>
           <td>created_at</td>
-          <td><?php echo($transaction->createdAt->format('Y-m-d H:i:s'))?></td>
+          <td><?php echo($transaction->createdAt->format("Y-m-d H:i:s"))?></td>
         </tr>
         <tr>
           <td>updated_at</td>
-          <td><?php echo($transaction->updatedAt->format('Y-m-d H:i:s'))?></td>
+          <td><?php echo($transaction->updatedAt->format("Y-m-d H:i:s"))?></td>
         </tr>
       </table>
     </p>

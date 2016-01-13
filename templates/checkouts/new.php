@@ -1,3 +1,4 @@
+<?php $clientToken = $this->data["client_token"]; ?>
 <html>
 <head>
     <title>BraintreeSlimExample</title>
@@ -19,7 +20,7 @@
 
     <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
     <script>
-      var client_token = "<?php echo $this->data['client_token'] ?>";
+      var client_token = "<?php echo($clientToken) ?>";
       braintree.setup(client_token, "dropin", {
         container: "payment-form"
       });
