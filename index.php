@@ -35,7 +35,7 @@ $app->post('/checkouts', function () use ($app) {
         $errorString = "";
 
         foreach($result->errors->deepAll() AS $error) {
-            $errorString .= $error->code . "-" . $error->message . "\n";
+            $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
         }
 
         $_SESSION["errors"] = $errorString;

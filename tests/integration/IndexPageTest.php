@@ -137,7 +137,7 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         curl_setopt($curl, CURLOPT_COOKIEFILE, "");
         $output = curl_exec($curl);
         curl_close($curl);
-        $this->assertRegExp('/Cannot use a paymentMethodNonce more than once./', $output);
+        $this->assertRegExp('/Error: 91564: Cannot use a paymentMethodNonce more than once./', $output);
     }
 
     function test_transactionProcessorErrorRedirectsToCheckoutShowPage()
