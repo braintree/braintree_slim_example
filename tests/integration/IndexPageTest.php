@@ -44,9 +44,9 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($curl);
         curl_close($curl);
-        $this->assertRegExp('/<form method="post" id="checkout"/', $output);
-        $this->assertRegExp('/<div id="payment-form"/', $output);
-        $this->assertRegExp('/<input type="text" name="amount" id="amount"/', $output);
+        $this->assertRegExp('/<form method="post" id="payment-form"/', $output);
+        $this->assertRegExp('/<div id="bt-dropin"/', $output);
+        $this->assertRegExp('/<input id="amount" name="amount" type="tel"/', $output);
     }
 
     function test_checkoutsShowContainsTransactionInformation()
@@ -97,6 +97,27 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         $this->assertRegExp('/\/checkouts\/[a-z0-9]+/', $redirectUrl);
     }
 
+    function test_displaysSuccessMessageWhenTransactionSuceeded()
+    {
+        $fields = [
+            'amount' => 10,
+            'payment_method_nonce' => "fake-valid-nonce"
+        ];
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkouts");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_COOKIEFILE, "");
+        $output = curl_exec($curl);
+        curl_close($curl);
+        $this->assertRegExp('/Sweet Success!/', $output);
+        $this->assertRegExp('/Your test transaction has been successfully processed./', $output);
+    }
+
     function test_checkoutsErrorRedirectsToCheckoutCreatePage()
     {
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
@@ -134,7 +155,7 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_COOKIEFILE, "");
+        curl_setopt($curl, CURLOPT_COOKIEFILE, "/dev/null");
         $output = curl_exec($curl);
         curl_close($curl);
         $this->assertRegExp('/Error: 91564: Cannot use a paymentMethodNonce more than once./', $output);
@@ -161,7 +182,7 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         $this->assertRegExp('/\/checkouts\/[a-z0-9]+/', $redirectUrl);
     }
 
-    function test_transactionProcessorErrorDisplaysFlashMessage()
+    function test_displaysFailureMessageOnProcessorErrors()
     {
         $fields = [
             'amount' => 2000,
@@ -178,6 +199,27 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         curl_setopt($curl, CURLOPT_COOKIEFILE, "");
         $output = curl_exec($curl);
         curl_close($curl);
-        $this->assertRegExp('/Transaction status - processor_declined/', $output);
+        $this->assertRegExp('/Transaction Failed/', $output);
+        $this->assertRegExp('/Your test transaction has a status of processor_declined/', $output);
+    }
+
+    function test_doesNotDisplayCustomerDetailsWhenMissing()
+    {
+        $fields = array(
+            'amount' => 10,
+            'payment_method_nonce' => "fake-valid-nonce"
+        );
+        $fields_string = "";
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "localhost:3000/checkout.php");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        $output = curl_exec($curl);
+        $redirectUrl = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+        curl_close($curl);
+        $this->assertNotRegExp('/Customer Details/', $output);
     }
 }
