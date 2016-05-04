@@ -18,6 +18,12 @@ An example Braintree integration for PHP in the Slim framework.
   php -S 0.0.0.0:3000
   ```
 
+## Deploying to Heroku
+
+You can deploy this app directly to Heroku to see the app live. Skip the setup instructions above and click the button below. This will walk you through getting this app up and running on Heroku in minutes.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/braintree/braintree_slim_example&env[BT_ENVIRONMENT]=sandbox)
+
 ## Running tests
 
 Integration tests make API calls to Braintree and require that you set up your Braintree credentials. You can run this project's integration tests by adding your sandbox API credentials to `.env` and calling `vendor/bin/phpunit` on the command line.
