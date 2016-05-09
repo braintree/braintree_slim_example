@@ -1,4 +1,6 @@
 # Braintree Slim Example
+[![Build Status](https://travis-ci.org/braintree/braintree_slim_example.svg?branch=master)](https://travis-ci.org/braintree/braintree_slim_example)
+
 An example Braintree integration for PHP in the Slim framework.
 
 ## Setup Instructions
