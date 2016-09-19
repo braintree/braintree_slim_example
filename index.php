@@ -22,6 +22,9 @@ $app->post('/checkouts', function () use ($app) {
     $result = Braintree\Transaction::sale([
         "amount" => $app->request->post('amount'),
         "paymentMethodNonce" => $app->request->post('payment_method_nonce'),
+        'options' => [
+            'submitForSettlement' => True
+        ]
     ]);
 
     if($result->success || $result->transaction) {

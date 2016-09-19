@@ -54,7 +54,10 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
         $result = Braintree\Transaction::sale([
             'amount' => $non_duplicate_amount,
-            'paymentMethodNonce' => 'fake-valid-nonce'
+            'paymentMethodNonce' => 'fake-valid-nonce',
+            'options' => [
+                'submitForSettlement' => True
+            ]
         ]);
         $transaction = $result->transaction;
         $curl = curl_init();
