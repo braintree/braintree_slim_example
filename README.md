@@ -30,6 +30,10 @@ You can deploy this app directly to Heroku to see the app live. Skip the setup i
 
 Integration tests make API calls to Braintree and require that you set up your Braintree credentials. You can run this project's integration tests by adding your sandbox API credentials to `.env` and calling `vendor/bin/phpunit` on the command line.
 
+## Testing Transactions
+
+Sandbox transactions must be made with [sample credit card numbers](https://developers.braintreepayments.com/reference/general/testing/php#credit-card-numbers), and the response of a `Braintree_Transaction::sale()` call is dependent on the [amount of the transaction](https://developers.braintreepayments.com/reference/general/testing/php#test-amounts).
+
 ## Pro Tips
 
 - The `example.env` contains an `APP_SECRET_KEY` setting. Even in development you should [generate your own custom secret key for your app](http://docs.slimframework.com/sessions/cookies/).
