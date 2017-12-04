@@ -61,10 +61,7 @@
           });
         });
       });
-
-      var checkout = new Demo({
-        formID: 'payment-form'
-      });
     </script>
+    <script src="/static/javascript/demo.js"></script>
 </body>
 </html>
