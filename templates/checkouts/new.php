@@ -37,7 +37,7 @@
     <script src="https://js.braintreegateway.com/web/dropin/1.9.2/js/dropin.min.js"></script>
     <script>
       var form = document.querySelector('#payment-form');
-      var client_token = "<?php echo(Braintree\ClientToken::generate()); ?>";
+      var client_token = "<?php echo($client_token); ?>";
 
       braintree.dropin.create({
         authorization: client_token,
