@@ -1,6 +1,13 @@
 <?php
 require_once("includes/braintree_init.php");
 
+$gateway = new Braintree\Gateway([
+    'environment' => getenv('BT_ENVIRONMENT'),
+    'merchantId' => getenv('BT_MERCHANT_ID'),
+    'publicKey' => getenv('BT_PUBLIC_KEY'),
+    'privateKey' => getenv('BT_PRIVATE_KEY')
+]);
+
 class IndexPageTest extends PHPUnit_Framework_TestCase
 {
     function test_rootReturnsHttpRedirect()
@@ -51,8 +58,9 @@ class IndexPageTest extends PHPUnit_Framework_TestCase
 
     function test_checkoutsShowContainsTransactionInformation()
     {
+        global $gateway;
         $non_duplicate_amount = rand(1,100) . "." . rand(1,99);
-        $result = Braintree\Transaction::sale([
+        $result = $gateway->transaction()->sale([
             'amount' => $non_duplicate_amount,
             'paymentMethodNonce' => 'fake-valid-nonce',
             'options' => [
