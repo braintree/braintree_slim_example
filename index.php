@@ -2,12 +2,6 @@
 require 'vendor/autoload.php';
 require_once("includes/braintree_init.php");
 
-$gateway = new Braintree_Gateway([
-    'environment' => getenv('BT_ENVIRONMENT'),
-    'merchantId' => getenv('BT_MERCHANT_ID'),
-    'publicKey' => getenv('BT_PUBLIC_KEY'),
-    'privateKey' => getenv('BT_PRIVATE_KEY')
-]);
 $app = new \Slim\Slim();
 
 $app->config([
@@ -18,14 +12,14 @@ $app->get('/', function () use ($app) {
     $app->redirect('/checkouts');
 });
 
-$app->get('/checkouts', function () use ($app, $gateway) {
+$app->get('/checkouts', function () use ($app) {
     $app->render('checkouts/new.php', [
-        'client_token' => $gateway->clientToken()->generate(),
+        'client_token' => Braintree\ClientToken::generate(),
     ]);
 });
 
-$app->post('/checkouts', function () use ($app, $gateway) {
-    $result = $gateway->transaction()->sale([
+$app->post('/checkouts', function () use ($app) {
+    $result = Braintree\Transaction::sale([
         "amount" => $app->request->post('amount'),
         "paymentMethodNonce" => $app->request->post('payment_method_nonce'),
         'options' => [
@@ -47,8 +41,8 @@ $app->post('/checkouts', function () use ($app, $gateway) {
     }
 });
 
-$app->get('/checkouts/:transaction_id', function ($transaction_id) use ($app, $gateway) {
-    $transaction = $gateway->transaction()->find($transaction_id);
+$app->get('/checkouts/:transaction_id', function ($transaction_id) use ($app) {
+    $transaction = Braintree\Transaction::find($transaction_id);
 
     $transactionSuccessStatuses = [
         Braintree\Transaction::AUTHORIZED,
