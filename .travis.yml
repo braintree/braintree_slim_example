@@ -1,12 +1,17 @@
 language: php
 php:
-  - 5.6
-  - 7.2
+- 5.6
+- 7.2
 before_install:
-  - curl -sS https://getcomposer.org/installer | php
-  - php composer.phar install
+- curl -sS https://getcomposer.org/installer | php
+- php composer.phar install
 script:
-  - vendor/bin/phpunit
+- vendor/bin/phpunit
 notifications:
-  email:
-    - "external-ci-notifications+braintree_slim_example@getbraintree.com"
+  email: false
+  slack:
+    on_success: change
+    on_failure: always
+    on_pull_requests: false
+    rooms:
+      - secure: e65GyaztJWRJNKPjneENHiW612Ckd8olXuPfkbczz6wBuWAVArII8lcyRG+anSLoCAQ/ULmY/vW4Z52wSkqfBJNraFkoM8GXP4MSyzgBpXXCB9GuVYuCjGHgaU9Qd0J1zJxHSCB9b76lWIRjxz/e5RYHq/04XRe9fm0kQ1iOuIKhSGAlYj5b4KbEYuFmz6Rz5ueZUoBl5QCEjfJjsai/RRoNfiA1g6txKLE5CpNOEX7jpRvyLJkqFRMr5spurubwHl0/kB+Pm470qDHLdMVx1KhhhJ9VUNkSAvqmWPCGJ0mVMu1L1cG4VzBH+/xzxChOkNz/wggDBdEk7e0qqKnqC6kSuUzLOaonp8OXG41SJTt+ZjAcA0maVI+kJoJGoL59yltFppgK3UejEFaQE/HXDU9yiF8euNchRM7KxEJRdk7e9gHvygkiD/UlUUMfNbQQtd9b3QwsLGflb29K2fHxtU+lTjhA3VgOAQ3sl+GZSKP7c/W8ToTSuNQHfi01B2dfeZ8BCS7Q/xRcmZYiqnGm579nlQEYXehEW7yb6NLmjG88Jchjh5sZLvaexBXdWQECOPj1ocn6XehNmv3k528+eUR8v4BRynCziTQC5f/HAGVG4+pVCQaYXakNpixIYQjyTNjtwXlD8wWNgfm+9GYrVMtDEktvl8sXFB4R6crPTPw=
